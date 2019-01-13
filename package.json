@@ -1,7 +1,7 @@
 {
-  "name": "trending-ghub",
-  "homepage": "http://doomscar.github.io/trending-ghub",
-  "version": "0.1.0",
+  "name": "trending-ghub2",
+  "homepage": "http://doomscar.github.io/trending-ghub2",
+  "version": "0.1.1",
   "private": true,
   "dependencies": {
     "react": "^16.7.0",
