@@ -24,12 +24,41 @@ class App extends Component {
     toError: false,
   }
 
+  countResult = (rst, rp) => {
+    const repo = rst.map(function (item, index) {
+      item.date = rp[index];
+      return (
+        item
+      )
+    }
+    )
+    //console.log(rp);
+    this.setState({ repo })
+  }
+
+  fetchDate = async (rest) => {
+    const trendsData = rest.map(async function (item) {
+      const res = await fetch(`https://api.github.com/repos/${item.author}/${item.name}/commits?page=1&per_page=1`);
+      const resu = await res.json();
+      return (
+        //resu[0].commit.committer.date
+        resu.message
+        //console.log(resu)
+      )
+    }
+    )
+    const repo = await Promise.all(trendsData).then((result) => result);
+    //this.setState({ repo });
+    this.countResult(rest, repo);
+  }
+
   fetchRepos = async () => {
     const res = await fetch(TRENDS_API_URL);
-    const repo = await res.json();
-    this.setState({ repo });
+    const result = await res.json();
+    //App.cssthis.setState({ result });
+    this.fetchDate(result);
   };
-  
+
   componentDidMount() {
     try {
       this.fetchRepos();
@@ -41,12 +70,12 @@ class App extends Component {
   }
 
   render() {
-    const data = this.state;
-
+    const repo = this.state;
     return (
       <div className="App">
         <header className="App-header">
-          < TrendGit data={data} />
+          {< TrendGit data={repo} />}
+          {console.log(this.state.repo)}
         </header>
       </div>
     );
