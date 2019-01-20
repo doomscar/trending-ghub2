@@ -4,20 +4,6 @@ import TrendGit from './TrendGit';
 
 const TRENDS_API_URL = 'https://github-trending-api.now.sh/repositories';
 
-/*function printError(e){
-  console.error(e);
-  this.setState({toError: true});
-}*/
-
-/*
-const url = "https://api.github.com/repos/" + it.author + "/" + it.name + "/commits?page=1&per_page=1";
-      const res = await fetch(url);
-      js = await res.json();
-      //console.log(js);
-      //console.log(js[0].commit.author.date + "121221");
-      return js[0].commit.author.date;
-*/
-
 class App extends Component {
   state = {
     repo: [],
@@ -40,11 +26,22 @@ class App extends Component {
     const trendsData = rest.map(async function (item) {
       const res = await fetch(`https://api.github.com/repos/${item.author}/${item.name}/commits?page=1&per_page=1`);
       const resu = await res.json();
-      return (
-        //resu[0].commit.committer.date
-        resu.message
-        //console.log(resu)
-      )
+      if (resu.hasOwnProperty("0")){
+        return (
+          //resu[0].commit.committer.date.substr(0,10)
+          `${resu[0].commit.committer.date.substr(0,10)} ${resu[0].commit.committer.date.substr(11,5)}`
+          //resu.message
+          //console.log(resu)
+        )
+      }
+      else{
+        return (
+          //resu[0].commit.committer.date.substr(0,10)
+          //`${resu[0].commit.committer.date.substr(0,10)} ${resu[0].commit.committer.date.substr(11,5)}`
+          resu.message
+          //console.log(resu)
+        )
+      }
     }
     )
     const repo = await Promise.all(trendsData).then((result) => result);
@@ -74,7 +71,7 @@ class App extends Component {
     return (
       <div className="App">
         <header className="App-header">
-          {< TrendGit data={repo} />}
+          < TrendGit data={repo} />
           {console.log(this.state.repo)}
         </header>
       </div>
