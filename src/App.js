@@ -23,7 +23,7 @@ class App extends Component {
   }
 
   fetchDate = async (rest) => {
-    const trendsData = rest.map(async function (item) {
+    const dateCommit = rest.map(async function (item) {
       const res = await fetch(`https://api.github.com/repos/${item.author}/${item.name}/commits?page=1&per_page=1`);
       const resu = await res.json();
       if (resu.hasOwnProperty("0")){
@@ -44,7 +44,7 @@ class App extends Component {
       }
     }
     )
-    const repo = await Promise.all(trendsData).then((result) => result);
+    const repo = await Promise.all(dateCommit).then((result) => result);
     //this.setState({ repo });
     this.countResult(rest, repo);
   }
