@@ -22,7 +22,7 @@ class App extends Component {
     this.setState({ repo })
   }
 
-  fetchDate = async (rest) => {
+  fetchDate = (rest) => {
     const dateCommit = rest.map(async function (item) {
       const res = await fetch(`https://api.github.com/repos/${item.author}/${item.name}/commits?page=1&per_page=1`);
       const resu = await res.json();
@@ -36,10 +36,7 @@ class App extends Component {
       }
       else{
         return (
-          //resu[0].commit.committer.date.substr(0,10)
-          //`${resu[0].commit.committer.date.substr(0,10)} ${resu[0].commit.committer.date.substr(11,5)}`
           resu.message
-          //console.log(resu)
         )
       }
     }
