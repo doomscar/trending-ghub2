@@ -44,9 +44,9 @@ class App extends Component {
       }
     }
     )
-    const repo = await Promise.all(dateCommit).then((result) => result);
+    Promise.all(dateCommit).then((result) => this.countResult(rest, result));
     //this.setState({ repo });
-    this.countResult(rest, repo);
+    //this.countResult(rest, repo);
   }
 
   fetchRepos = async () => {
