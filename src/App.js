@@ -26,19 +26,13 @@ class App extends Component {
     const dateCommit = rest.map(async function (item) {
       const res = await fetch(`https://api.github.com/repos/${item.author}/${item.name}/commits?page=1&per_page=1`);
       const resu = await res.json();
-      if (resu.hasOwnProperty("0")){
-        return (
-          //resu[0].commit.committer.date.substr(0,10)
-          `${resu[0].commit.committer.date.substr(0,10)} ${resu[0].commit.committer.date.substr(11,5)}`
-          //resu.message
-          //console.log(resu)
-        )
+      let d = "";
+      try {
+        d = `${resu[0].commit.committer.date.substr(0,10)} ${resu[0].commit.committer.date.substr(11,5)}`;
+      } catch {
+        d = resu.message; // API rate limit exceeded for %IP% (But here's the good news: Authenticated requests get a higher rate limit...
       }
-      else{
-        return (
-          resu.message
-        )
-      }
+      return d;
     }
     )
     Promise.all(dateCommit).then((result) => this.countResult(rest, result));
