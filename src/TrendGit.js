@@ -1,13 +1,13 @@
 import React from 'react';
 
 const TrendGit = props => {
-  const {data} = props;
+  const { data } = props;
   //console.log(data.repo);
   if (data.toError) {
     return <div>Ошибка загрузки!</div>
   }
 
-  const trendsTemplate = data.repo.map(function ({name, language, description, date, url}) {
+  const trendsTemplate = data.repo.map(({ name, language, description, date, url }) => {
     return (
       <div key={name} className={'Trande-git'}>
         <p><span>Имя репозитория:</span> {name}</p>

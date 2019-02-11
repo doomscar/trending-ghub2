@@ -13,9 +13,7 @@ class App extends Component {
   countResult = (rst, rp) => {
     const repo = rst.map(function (item, index) {
       item.date = rp[index];
-      return (
-        item
-      )
+      return item;
     }
     )
     //console.log(rp);
@@ -28,7 +26,7 @@ class App extends Component {
       const resu = await res.json();
       let d = "";
       try {
-        d = `${resu[0].commit.committer.date.substr(0,10)} ${resu[0].commit.committer.date.substr(11,5)}`;
+        d = `${resu[0].commit.committer.date.substr(0, 10)} ${resu[0].commit.committer.date.substr(11, 5)}`;
       } catch {
         d = resu.message; // API rate limit exceeded for %IP% (But here's the good news: Authenticated requests get a higher rate limit...
       }
@@ -63,7 +61,6 @@ class App extends Component {
       <div className="App">
         <header className="App-header">
           < TrendGit data={repo} />
-          {console.log(this.state.repo)}
         </header>
       </div>
     );
