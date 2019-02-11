@@ -7,42 +7,41 @@ const TRENDS_API_URL = 'https://github-trending-api.now.sh/repositories';
 class App extends Component {
   state = {
     repo: [],
-    toError: false,
+    isError: false,
   }
 
-  countResult = (rst, rp) => {
-    const repo = rst.map(function (item, index) {
-      item.date = rp[index];
+  countResult = (repositories, date) => {                  // добавляем в массив с репозиториями элемент date (дата коммита)
+    const repo = repositories.map((item, index) => {
+      item.date = date[index];
       return item;
-    }
-    )
+    })
     //console.log(rp);
     this.setState({ repo })
   }
 
-  fetchDate = (rest) => {
-    const dateCommit = rest.map(async function (item) {
+  fetchCommitDate = (repositories) => {                    // получаем даты для всех репозиториев из массива
+    const dateCommit = repositories.map(async function (item) {
       const res = await fetch(`https://api.github.com/repos/${item.author}/${item.name}/commits?page=1&per_page=1`);
-      const resu = await res.json();
-      let d = "";
+      const result = await res.json();
+      let printResult = "";
       try {
-        d = `${resu[0].commit.committer.date.substr(0, 10)} ${resu[0].commit.committer.date.substr(11, 5)}`;
+        printResult = `${result[0].commit.committer.date.substr(0, 10)} ${result[0].commit.committer.date.substr(11, 5)}`;
       } catch {
-        d = resu.message; // API rate limit exceeded for %IP% (But here's the good news: Authenticated requests get a higher rate limit...
+        printResult = result.message; // API rate limit exceeded for %IP% (But here's the good news: Authenticated requests get a higher rate limit...
       }
-      return d;
+      return printResult;
     }
     )
-    Promise.all(dateCommit).then((result) => this.countResult(rest, result));
+    Promise.all(dateCommit).then(date => this.countResult(repositories, date)); // передаем два массива с репозиториями (repositories) и датами коммитов (date) в countResult
     //this.setState({ repo });
     //this.countResult(rest, repo);
   }
 
-  fetchRepos = async () => {
+  fetchRepos = async () => {                               // получаем массив с репозиториями
     const res = await fetch(TRENDS_API_URL);
     const result = await res.json();
     //App.cssthis.setState({ result });
-    this.fetchDate(result);
+    this.fetchCommitDate(result);
   };
 
   componentDidMount() {
@@ -50,7 +49,7 @@ class App extends Component {
       this.fetchRepos();
     } catch (error) {
       console.error(error);
-      this.setState({ toError: true });
+      this.setState({ isError: true });
     }
 
   }

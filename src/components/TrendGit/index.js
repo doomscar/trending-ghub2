@@ -4,7 +4,7 @@ import './TrendGit.css';
 const TrendGit = props => {
   const { data } = props;
   //console.log(data.repo);
-  if (data.toError) {
+  if (data.isError) {
     return <div>Ошибка загрузки!</div>
   }
 
