@@ -1,4 +1,5 @@
 import React from 'react';
+import './TrendGit.css';
 
 const TrendGit = props => {
   const { data } = props;

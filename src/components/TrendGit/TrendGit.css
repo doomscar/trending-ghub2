@@ -1,0 +1,18 @@
+.Trande-git p{
+  margin: 0;
+}
+
+.Trande-git a {
+  color: white;
+}
+
+.Trande-git span {
+  text-decoration: underline;
+}
+
+.Trande-git{
+  background-color: #666666;
+  padding: 20px;
+  margin-top: 20px;
+  width: 50%;
+}

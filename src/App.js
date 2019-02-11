@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
-import TrendGit from './TrendGit';
+import TrendGit from './components/TrendGit';
 
 const TRENDS_API_URL = 'https://github-trending-api.now.sh/repositories';
 
