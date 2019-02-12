@@ -10,7 +10,7 @@ class App extends Component {
     isError: false,
   }
 
-  countResult = (repositories, date) => {                  // добавляем в массив с репозиториями элемент date (дата коммита)
+  countResult = (repositories, date) => {                        // добавляем в массив с репозиториями элемент date (дата коммита)
     const repo = repositories.map((item, index) => {
       item.date = date[index];
       return item;
@@ -19,7 +19,7 @@ class App extends Component {
     this.setState({ repo })
   }
 
-  fetchCommitDate = (repositories) => {                    // получаем даты для всех репозиториев из массива
+  fetchCommitDate = async (repositories) => {                    // получаем даты для всех репозиториев из массива
     const dateCommit = repositories.map(async function (item) {
       const res = await fetch(`https://api.github.com/repos/${item.author}/${item.name}/commits?page=1&per_page=1`);
       const result = await res.json();
@@ -30,14 +30,15 @@ class App extends Component {
         printResult = result.message; // API rate limit exceeded for %IP% (But here's the good news: Authenticated requests get a higher rate limit...
       }
       return printResult;
-    }
-    )
-    Promise.all(dateCommit).then(date => this.countResult(repositories, date)); // передаем два массива с репозиториями (repositories) и датами коммитов (date) в countResult
+    })
+    const date = await Promise.all(dateCommit);
+    this.countResult(repositories, date);                       // передаем два массива с репозиториями (repositories) и датами коммитов (date) в countResult
+    //Promise.all(dateCommit).then(date => this.countResult(repositories, date)); 
     //this.setState({ repo });
     //this.countResult(rest, repo);
   }
 
-  fetchRepos = async () => {                               // получаем массив с репозиториями
+  fetchRepos = async () => {                                    // получаем массив с репозиториями
     const res = await fetch(TRENDS_API_URL);
     const result = await res.json();
     //App.cssthis.setState({ result });
@@ -51,7 +52,6 @@ class App extends Component {
       console.error(error);
       this.setState({ isError: true });
     }
-
   }
 
   render() {
